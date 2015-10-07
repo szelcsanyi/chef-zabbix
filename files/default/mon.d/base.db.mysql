@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Create user for monitoring:
+# GRANT process, replication client on *.* to db_monitor@127.0.0.1 WITH MAX_USER_CONNECTIONS 5;
+
+
+declare instance="${1:-}"
+declare item="${2:-}"
+
+if [ ! -f /tmp/mysql-monitoring-status-$instance ]; then
+	echo "No such instance $instance" >&2
+	exit 1
+fi
+
+egrep -i "^\s+?$item:?\s" /tmp/mysql-monitoring-status-$instance | awk '{print $2}'
+

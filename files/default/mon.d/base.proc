@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -o pipefail
+set -o nounset
+set -o errexit
+
+declare cmd="${1:-}"
+declare process="${2:-}"
+declare percent=0
+
+case "$cmd" in
+        cpu)
+            for pid in $(pgrep $process); do
+                tpercent=$(top -b -n 1 -p $pid | grep ^$pid | awk {' print $9 '})
+                if [ $(echo "$tpercent > $percent" | bc) -eq 1 ]; then
+                    percent="$tpercent"
+                fi
+            done
+            echo "$percent"
+        ;;
+esac

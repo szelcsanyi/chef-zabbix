@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [ ! -f /proc/mdstat ] ; then
+    echo 2
+    exit 2
+fi
+
+/bin/grep -A1 "$1 " /proc/mdstat | /usr/bin/tail -n1 | /bin/grep -E -c "\[.*?_.*?\]"

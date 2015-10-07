@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+comma=""
+
+echo -e "{\n\t\"data\":[\n"
+if [ -f /proc/mdstat ]; then
+        grep ^md /proc/mdstat | while read line
+        do
+                MDdev=$(echo "$line" | awk '{print $1}')
+                echo -e "\t$comma{ \"{#MD_DEVICE}\":\t\"${MDdev}\" }"
+                comma=","
+        done
+fi
+echo -e "\n\t]\n}"

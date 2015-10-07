@@ -1,0 +1,15 @@
+#!/bin/bash
+
+declare item="${1:-}"
+
+if [ "$item" == "cache.used" ]; then
+        # http://kristian.blog.linpro.no/2009/12/08/varnishstat-for-dummies/
+        varnishstat -1 -f sm_balloc,sma_balloc | awk '{ SUM+=$2 } END { print SUM }'
+elif [ "$item" == "cache.hitrate" ]; then
+        hit=$(varnishstat -1 -f cache_hit | awk {'print $2'})
+        miss=$(varnishstat -1 -f cache_miss | awk {'print $2'})
+        echo "$hit / ($hit + $miss) *100" | bc -l
+else
+        varnishstat -1 -f "$item" | awk '{ print $2 }'
+fi
+

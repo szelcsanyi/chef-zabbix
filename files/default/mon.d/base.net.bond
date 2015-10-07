@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -d /proc/net/bonding ] && [ ! -f /proc/net/bonding/"$1" ] ; then
+    echo 2
+    exit 2
+fi
+
+/bin/grep -c down /proc/net/bonding/"$1"

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+comma=""
+
+echo -e "{\n\t\"data\":[\n"
+
+if [ -d "/proc/net/bonding/" ]; then
+    for dev in /proc/net/bonding; do
+        echo -e "\t$comma{ \"{#BOND_DEVICE}\":\t\"${dev}\" }"
+        comma=","
+    done
+fi
+
+echo -e "\n\t]\n}"

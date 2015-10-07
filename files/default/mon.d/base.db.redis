@@ -1,0 +1,11 @@
+#!/bin/bash
+
+declare instance="${1:-}"
+declare item="${2:-}"
+
+if [ ! -f /tmp/redis-monitoring-status-$instance ]; then
+	echo "No such instance $instance" >&2
+	exit 1
+fi
+
+egrep -i "^$item:" /tmp/redis-monitoring-status-$instance | cut -d: -f2

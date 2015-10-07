@@ -1,0 +1,14 @@
+#!/bin/bash
+
+declare discoverytype="${1:-}"
+
+comma=""
+
+echo -e "{\n\t\"data\":[\n"
+
+for instance in $(ls -1 /tmp/redis-monitoring-status-* 2>/dev/null | grep -v "\.tmp$" 2>/dev/null); do
+	echo -e "\t$comma{ \"{#REDIS_INSTANCE}\":\t\"${instance#/tmp/redis-monitoring-status-*}\" }"
+	comma=","
+done
+
+echo -e "\n\t]\n}"

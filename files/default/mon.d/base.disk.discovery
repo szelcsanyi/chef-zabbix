@@ -1,0 +1,12 @@
+#!/bin/bash
+
+comma=""
+echo -e "{\n\t\"data\":[\n"
+if [ -f /proc/partitions ]; then
+        egrep -o "(sd[a-z][a-z]?|xvd[a-z][a-z]?|vd[a-z][a-z]?|drbd[0-9]+|md[0-9]+)" /proc/partitions | uniq | while read line
+        do
+                echo -e "\t$comma{ \"{#DISK_DEVICE}\":\t\"${line}\" }"
+                comma=","
+        done
+fi
+echo -e "\n\t]\n}"

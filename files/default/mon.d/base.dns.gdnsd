@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -o pipefail
+set -o nounset
+set -o errexit
+
+declare command="${1:-}"
+
+case "$command" in
+        noerror)
+                awk -F, 'FNR == 4 {print $1}' /tmp/gdnsd-status
+                ;;
+        refused)
+                awk -F, 'FNR == 4 {print $2}' /tmp/gdnsd-status
+                ;;
+        nxdomain)
+                awk -F, 'FNR == 4 {print $3}' /tmp/gdnsd-status
+                ;;
+        notimp)
+                awk -F, 'FNR == 4 {print $4}' /tmp/gdnsd-status
+                ;;
+        badvers)
+                awk -F, 'FNR == 4 {print $5}' /tmp/gdnsd-status
+                ;;
+        formerr)
+                awk -F, 'FNR == 4 {print $6}' /tmp/gdnsd-status
+                ;;
+        dropped)
+                awk -F, 'FNR == 4 {print $7}' /tmp/gdnsd-status
+                ;;
+        v6)
+                awk -F, 'FNR == 4 {print $8}' /tmp/gdnsd-status
+                ;;
+        edns)
+                awk -F, 'FNR == 4 {print $9}' /tmp/gdnsd-status
+                ;;
+        edns_clientsub)
+                awk -F, 'FNR == 4 {print $10}' /tmp/gdnsd-status
+                ;;
+        backend_down)
+                grep DOWN /tmp/gdnsd-status | head -n1 | sed "s/\/.*//" || echo "OK"
+                ;;
+        *)
+                echo "Unrecognized command $command" >&2
+                exit 1
+                ;;
+esac

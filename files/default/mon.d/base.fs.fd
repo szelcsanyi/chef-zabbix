@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -o pipefail
+set -o nounset
+set -o errexit
+
+declare command="${1:-}"
+
+case "$command" in
+        open)
+            awk '{print $1}' < /proc/sys/fs/file-nr
+            ;;
+        max)
+            awk '{print $3}' < /proc/sys/fs/file-nr
+            ;;
+esac
+
+

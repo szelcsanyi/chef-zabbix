@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# Put the following line at the end of /etc/zabbix/zabbix_agentd.conf:
+# UserParameter=basecheck[*], /etc/zabbix/mon.d/basecheck $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+set -o pipefail
+set -o nounset
+set -o errexit
+
+lowercase () {
+        echo "$@" | tr '[:upper:]' '[:lower:]'
+}
+
+command="$(lowercase "${1:-}")"
+shift
+
+case "$command" in
+        softraid)
+                /etc/zabbix/mon.d/base.raid.softraid "$@"
+                ;;
+        softraid.discovery)
+                /etc/zabbix/mon.d/base.raid.softraid.discovery "$@"
+                ;;
+        bond)
+                /etc/zabbix/mon.d/base.net.bond "$@"
+                ;;
+        bond.discovery)
+                /etc/zabbix/mon.d/base.net.bond.discovery "$@"
+                ;;
+        disk.discovery)
+                /etc/zabbix/mon.d/base.disk.discovery "$@"
+                ;;
+        mysql)
+                /etc/zabbix/mon.d/base.db.mysql "$@"
+                ;;
+        mysql.discovery)
+                /etc/zabbix/mon.d/base.db.mysql.discovery "$@"
+                ;;
+        redis)
+                /etc/zabbix/mon.d/base.db.redis "$@"
+                ;;
+        redis.discovery)
+                /etc/zabbix/mon.d/base.db.redis.discovery "$@"
+                ;;
+        storage.free)
+                /etc/zabbix/mon.d/base.fs.df "$@"
+                ;;
+        fs.fd)
+                /etc/zabbix/mon.d/base.fs.fd "$@"
+                ;;
+        fs.writable)
+                /etc/zabbix/mon.d/base.fs.writable "$@"
+                ;;
+        web.varnish)
+                /etc/zabbix/mon.d/web.varnish "$@"
+                ;;
+        nginx.requests)
+                head -n3 /tmp/server-status | tail -n1 | cut -d " " -f 4
+                ;;
+        nginx.handled)
+                head -n3 /tmp/server-status | tail -n1 | cut -d " " -f 3
+                ;;
+        mysql.slave.running)
+                grep _Running /tmp/mysql-slave-status | grep -c No
+                ;;
+        mysql.slave.delay)
+                grep Seconds_Behind_Master /tmp/mysql-slave-status | cut -d ":" -f 2 | tr -d " "
+                ;;
+        mysql.longrunning)
+                awk '{ print $1 }' /tmp/mysql-longrunning
+                ;;
+        mysql.connections)
+                grep Connections /tmp/mysql-server-status | cut -f 2
+                ;;
+        mysql.queries)
+                grep Queries /tmp/mysql-server-status | cut -f 2
+                ;;
+        packages)
+                /etc/zabbix/mon.d/base.packages "$@"
+                ;;
+        gdnsd)
+                /etc/zabbix/mon.d/base.dns.gdnsd "$@"
+                ;;
+        fork.rate)
+                awk '/processes/ {print $2}' /proc/stat
+                ;;
+        proc)
+                /etc/zabbix/mon.d/base.proc "$@"
+                ;;
+        *)
+                echo "Unrecognized command $command" >&2
+                exit 1
+                ;;
+esac
+
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+DF="$(command -pv df)"
+TIMEOUT="$(command -pv timeout)"
+if [ -z "$TIMEOUT" ]; then
+        DF="$DF"
+else
+        DF="$TIMEOUT 3 $DF"
+fi
+
+max_used="$($DF --local --exclude-type=iso9660 -P"$1" 2>/dev/null | awk '/[0-9]% / {print $5}' | sort -n | tail -1 | tr -d '%')"
+
+if [ "$max_used" -eq "$max_used" ]; then
+        # echo $VARIABLE is a number
+        echo "$(( 100 - max_used ))"
+else
+        # echo $VARIABLE is not a number
+        echo -1
+fi
+

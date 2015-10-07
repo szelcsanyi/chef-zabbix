@@ -1,0 +1,21 @@
+#!/bin/bash
+
+declare command="${1:-}"
+
+case "$command" in
+        upgradeable)
+          /usr/lib/update-notifier/apt-check 2>&1| awk -F\; '{print $1}'
+          ;;
+        security)
+          /usr/lib/update-notifier/apt-check 2>&1| awk -F\; '{print $NF}'
+          ;;
+        repository)
+          repo_date=$(date -r /var/lib/apt/periodic/update-stamp +%s)
+          now=$(date +%s)
+          diff=$(( now - repo_date ))
+          if [ $diff -gt 90000 ]; then
+            echo 0
+          else
+            echo 1
+          fi
+esac
