@@ -10,7 +10,7 @@ directory '/var/log/zabbix' do
 end
 
 template '/etc/zabbix/zabbix_agentd.conf' do
-  source '/etc/zabbix/zabbix_agentd.conf.erb'
+  source 'etc/zabbix/zabbix_agentd.conf.erb'
   variables(zabbix_server: node['zabbix']['server_addresses'])
   owner         'root'
   group         'root'
@@ -36,7 +36,7 @@ service 'zabbix-agent' do
   status_command '/etc/init.d/zabbix-agent status'
 end
 
-`mount`.split("\n").grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
+Mixlib::ShellOut.new('mount').run_command.split('\n').grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
   file "#{fs}/.zabbix.fs.writable" do
     owner 'zabbix'
     group 'zabbix'
