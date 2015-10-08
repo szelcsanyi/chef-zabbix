@@ -1,18 +1,18 @@
 gem_file = "zabbixapi-2.4.2.gem"
 dest_gem_file = "#{Chef::Config['file_cache_path']}/#{gem_file}"
-c = cookbook_file "#{dest_gem_file}" do
-    source "gems/#{gem_file}"
-    action :nothing
+c = cookbook_file dest_gem_file do
+  source "gems/#{gem_file}"
+  action :nothing
 end
 c.run_action(:create_if_missing)
 
 r = gem_package 'zabbixapi' do
-    action :nothing
-    version '2.4.2'
-    source dest_gem_file
-    if ::File.exists?('/opt/chef/embedded/bin/gem')
-        gem_binary '/opt/chef/embedded/bin/gem'
-    end
+  action :nothing
+  version '2.4.2'
+  source dest_gem_file
+  if ::File.exists?('/opt/chef/embedded/bin/gem')
+    gem_binary '/opt/chef/embedded/bin/gem'
+  end
 end
 
 r.run_action(:install)
@@ -20,25 +20,25 @@ Gem.clear_paths
 
 
 unless Gem::Specification::find_all_by_name('zabbixapi').empty?
-    require 'zabbixapi'
+  require 'zabbixapi'
 
-    begin
-    zbx = ZabbixApi.connect(
-        :url => node["zabbix"]["url"],
-        :user => node["zabbix"]["user"],
-        :password => node["zabbix"]["password"],
-        :debug => false
-    )
-    rescue Exception => e
-        Chef::Log.info("[Zabbix] Cannot connect to Zabbix api! (#{e.message})")
-        return
-    end
+  begin
+  zbx = ZabbixApi.connect(
+    :url => node["zabbix"]["url"],
+    :user => node["zabbix"]["user"],
+    :password => node["zabbix"]["password"],
+    :debug => false
+  )
+  rescue Exception => e
+    Chef::Log.info("[Zabbix] Cannot connect to Zabbix api! (#{e.message})")
+    return
+  end
 
-    #version = zbx.query(
-    #  :method => "apiinfo.version",
-    #  :params => {}
-    #)
-    #Chef::Log.info("[Zabbix] Api version: #{version}")
+  #version = zbx.query(
+  #  :method => "apiinfo.version",
+  #  :params => {}
+  #)
+  #Chef::Log.info("[Zabbix] Api version: #{version}")
 
     begin
     zbxnodeid = zbx.hosts.get_id(:host => node["fqdn"])
@@ -106,5 +106,5 @@ unless Gem::Specification::find_all_by_name('zabbixapi').empty?
     end
 
 else
-        Chef::Log.info('Zabbixapi gem is not available!')
+  Chef::Log.info('Zabbixapi gem is not available!')
 end
