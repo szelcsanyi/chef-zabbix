@@ -44,7 +44,7 @@ else
   begin
     zbxnodeid = zbx.hosts.get_id(host: node['fqdn'])
     if zbxnodeid.nil?
-      Chef::Log.info("[Zabbix] Host #{node.fqdn} is not registered in Zabbix. Registering...")
+      Chef::Log.info("[Zabbix] Host #{node['fqdn']} is not registered in Zabbix. Registering...")
 
       if node['public_ipaddress'].empty?
         interfaces = [{ type: 1, main: 1, ip: node['ipaddress'], dns: node['fqdn'], port: 10_050, useip: 1 }]
@@ -73,7 +73,7 @@ else
         Chef::Log.info("[Zabbix] Registered with id: #{zbxnodeid}")
       end
     else
-      Chef::Log.info("[Zabbix] Host #{node.fqdn} is already registered (#{zbxnodeid})!")
+      Chef::Log.info("[Zabbix] Host #{node['fqdn']} is already registered (#{zbxnodeid})!")
     end
 
     tmpls = zbx.templates.get_ids_by_host(hostids: [zbxnodeid])
