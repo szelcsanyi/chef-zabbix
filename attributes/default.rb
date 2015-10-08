@@ -1,9 +1,13 @@
-default['zabbix']['proxy_id'] = 0
+# agent
 default['zabbix']['server_addresses'] = [ ]
+
+# register_client
+default['zabbix']['proxy_id'] = 0
 default['zabbix']['url'] = 'https://example.com/api_jsonrpc.php'
 default['zabbix']['user'] = 'api'
 default['zabbix']['password'] = ''
 
+# proxy
 default['zabbix']['proxy']['server_address'] = '127.0.0.1'
 default['zabbix']['proxy']['server_port'] = '10051'
 default['zabbix']['proxy']['pollers'] = '10'
