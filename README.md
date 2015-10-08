@@ -22,13 +22,13 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 * for agent:
 * `default['zabbix']['server_addresses']` - array if of ips where the agent accepts connection from
 
-# for register_client
+* for register_client
 * `default['zabbix']['proxy_id']` - id of the zabbix proxy (default: 0)
 * `default['zabbix']['url']` - zabbix api url (default: https://example.com/api_jsonrpc.php)
 * `default['zabbix']['user']` - zabbix api username (default: api)
 * `default['zabbix']['password']` - zabbix api password
 
-# for proxy:
+* for proxy:
 * `default['zabbix']['proxy']['server_address']` - where to send data by proxy (default: '127.0.0.1')
 * `default['zabbix']['proxy']['server_port']` - zabbix server port (default: 10051)
 * `default['zabbix']['proxy']['pollers']` - zabbix proxy pollers (default: 10)
