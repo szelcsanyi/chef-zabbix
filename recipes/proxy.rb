@@ -9,7 +9,7 @@ end
 Chef::Log.info("[Zabbix] Proxy autostart: #{node['zabbix']['proxy']['autostart']}")
 
 service 'zabbix-proxy' do
-  supports :status => true, :restart => true, :reload => true
+  supports status: true, restart: true, reload: true
   if node['zabbix']['proxy']['autostart']
     action :enable
   else

@@ -1,5 +1,5 @@
 LineLength:
-  Max: 80
+  Max: 160
   Exclude:
     - "**/attributes/*.rb"
     - "**/metadata.rb"

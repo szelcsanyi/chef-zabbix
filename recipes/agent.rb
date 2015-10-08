@@ -1,21 +1,21 @@
 package 'zabbix-agent' do
-      action :install
+  action :install
 end
 
 directory '/var/log/zabbix' do
-    action :create
-    owner 'zabbix'
-    group 'zabbix'
-    mode '0755'
+  action :create
+  owner 'zabbix'
+  group 'zabbix'
+  mode '0755'
 end
 
 template '/etc/zabbix/zabbix_agentd.conf' do
-    source '/etc/zabbix/zabbix_agentd.conf.erb'
-    variables( :zabbix_server => node['zabbix']['server_addresses'] )
-    owner         'root'
-    group         'root'
-    mode          '0644'
-    notifies :restart, 'service[zabbix-agent]'
+  source '/etc/zabbix/zabbix_agentd.conf.erb'
+  variables(zabbix_server: node['zabbix']['server_addresses'])
+  owner         'root'
+  group         'root'
+  mode          '0644'
+  notifies :restart, 'service[zabbix-agent]'
 end
 
 remote_directory '/etc/zabbix/mon.d' do
@@ -30,21 +30,20 @@ remote_directory '/etc/zabbix/mon.d' do
 end
 
 service 'zabbix-agent' do
-    provider Chef::Provider::Service::Init::Debian
-    action [:enable, :start]
-    supports [:restart => true, :reload => true, :status => true]
-    status_command '/etc/init.d/zabbix-agent status'
+  provider Chef::Provider::Service::Init::Debian
+  action [:enable, :start]
+  supports [restart: true, reload: true, status: true]
+  status_command '/etc/init.d/zabbix-agent status'
 end
 
-`mount`.split("\n").grep(/(ext|xfs)/).map { |x| x.split(" ")[2]  }.each do |fs|
-    file "#{fs}/.zabbix.fs.writable" do
-        owner 'zabbix'
-        group 'zabbix'
-        mode '0644'
-        action :create
-    end
+`mount`.split("\n").grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
+  file "#{fs}/.zabbix.fs.writable" do
+    owner 'zabbix'
+    group 'zabbix'
+    mode '0644'
+    action :create
+  end
 end
-
 
 node['zabbix']['server_addresses'].each do |server|
   firewall_rule 'Allow zabbix check' do

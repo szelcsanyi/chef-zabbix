@@ -1,5 +1,5 @@
 # agent
-default['zabbix']['server_addresses'] = [ ]
+default['zabbix']['server_addresses'] = []
 
 # register_client
 default['zabbix']['proxy_id'] = 0
