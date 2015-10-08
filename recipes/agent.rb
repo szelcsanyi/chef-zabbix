@@ -36,7 +36,9 @@ service 'zabbix-agent' do
   status_command '/etc/init.d/zabbix-agent status'
 end
 
-Mixlib::ShellOut.new('mount').run_command.split('\n').grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
+cmd = Mixlib::ShellOut.new('mount')
+cmd.run_command
+cmd.stdout.split('\n').grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
   file "#{fs}/.zabbix.fs.writable" do
     owner 'zabbix'
     group 'zabbix'
@@ -44,6 +46,7 @@ Mixlib::ShellOut.new('mount').run_command.split('\n').grep(/(ext|xfs)/).map { |x
     action :create
   end
 end
+cmd.error!
 
 node['zabbix']['server_addresses'].each do |server|
   firewall_rule 'Allow zabbix check' do
