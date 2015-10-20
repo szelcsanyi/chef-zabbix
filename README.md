@@ -10,7 +10,6 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 ## Supported Platforms
 
 * Ubuntu 14.04
-* Debian 7
 
 ## Recipes
 
@@ -25,7 +24,7 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 
 * name: The key name for the zabbix item.
 * command: cli command to run.
-* enabled: true/false value (default: true)
+* enabled: true/false value (default: true).
 
 ```ruby
 L7_zabbix_check 'app.hits' do

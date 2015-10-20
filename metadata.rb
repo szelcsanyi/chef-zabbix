@@ -9,6 +9,5 @@ source_url       'https://github.com/szelcsanyi/chef-zabbix'
 issues_url       'https://github.com/szelcsanyi/chef-zabbix/issues'
 
 supports 'ubuntu', '= 14.04'
-supports 'debian', '= 7'
 
 depends 'L7-firewall'
