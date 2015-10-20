@@ -94,5 +94,6 @@ Timeout=30
 #UserParameter=mysql.version,mysql -V
 
 UserParameter=basecheck[*], /etc/zabbix/mon.d/basecheck $1 $2 $3 $4 $5 $6 $7 $8 $9
+UserParameter=customcheck[*], /etc/zabbix/mon.d/customcheck $1 $2 $3 $4 $5 $6 $7 $8 $9
 
 Include=/etc/zabbix/zabbix_agentd.d/*.conf

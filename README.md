@@ -9,7 +9,8 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 
 ## Supported Platforms
 
-* Ubuntu 14.04+
+* Ubuntu 14.04
+* Debian 7
 
 ## Recipes
 
@@ -17,6 +18,23 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 * `L7-zabbix::agent` - Set up zabbix-agent
 * `L7-zabbix::proxy` - Set up zabbix-proxy
 * `L7-zabbix::register_client` - Registers client to zabbix server using zabbix api
+
+## Definations
+
+* `L7_zabbix_check` - Custom zabbix check with UserParameter
+
+* name: The key name for the zabbix item.
+* command: cli command to run.
+* enabled: true/false value (default: true)
+
+```ruby
+L7_zabbix_check 'app.hits' do
+	command '/usr/bin/redis-cli --raw -p 6381 -h 127.0.0.1 llen hits'
+	enabled false
+end
+```
+
+Then you can add an item in zabbix with key: `customcheck[app.hits]`
 
 ## Attributes
 * for agent:
