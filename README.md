@@ -9,7 +9,8 @@ Configures [zabbix](http://zabbix.com) agent and proxy via Opscode Chef
 
 ## Supported Platforms
 
-* Ubuntu 14.04
+* Ubuntu 14.04+
+* Debian 7.0+
 
 ## Recipes
 
