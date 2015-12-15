@@ -46,7 +46,9 @@ else
     if zbxnodeid.nil?
       Chef::Log.info("[Zabbix] Host #{node['fqdn']} is not registered in Zabbix. Registering...")
 
-      if node['public_ipaddress'].empty?
+      if node['cloud_v2'] and node['cloud_v2']['public_ipv4'] and !node['cloud_v2']['public_ipv4'].empty?
+        interfaces = [{ type: 1, main: 1, ip: node['cloud_v2']['public_ipv4'], dns: node['fqdn'], port: 10_050, useip: 1 }]
+      elsif node['public_ipaddress'].empty?
         interfaces = [{ type: 1, main: 1, ip: node['ipaddress'], dns: node['fqdn'], port: 10_050, useip: 1 }]
       else
         interfaces = [{ type: 1, main: 1, ip: node['public_ipaddress'], dns: node['fqdn'], port: 10_050, useip: 1 }]
