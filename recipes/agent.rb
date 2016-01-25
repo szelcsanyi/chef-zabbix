@@ -38,7 +38,7 @@ end
 
 cmd = Mixlib::ShellOut.new('mount')
 cmd.run_command
-cmd.stdout.split('\n').grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
+cmd.stdout.split("\n").grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs|
   file "#{fs}/.zabbix.fs.writable" do
     owner 'zabbix'
     group 'zabbix'
