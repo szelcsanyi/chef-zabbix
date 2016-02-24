@@ -49,10 +49,20 @@ end
 cmd.error!
 
 node['zabbix']['server_addresses'].each do |server|
-  L7_firewall_rule 'Allow zabbix check' do
-    rule "-s #{server} --dport 10050"
-    proto 'tcp'
-    jump 'ACCEPT'
-    chain 'WHITELIST'
+  if server.index('.')
+    L7_firewall_rule 'Allow zabbix check' do
+      rule "-s #{server} --dport 10050"
+      proto 'tcp'
+      jump 'ACCEPT'
+      chain 'WHITELIST'
+    end
+  else
+    L7_firewall_rule 'Allow zabbix check' do
+      rule "-s #{server} --dport 10050"
+      proto 'tcp'
+      jump 'ACCEPT'
+      chain 'WHITELIST'
+      protoversion 'ipv6'
+    end
   end
 end
