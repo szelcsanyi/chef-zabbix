@@ -24,15 +24,17 @@ else
   require 'zabbixapi'
   require 'timeout'
 
+  zbx = nil
+
   begin
-    Timeout::timeout(node['zabbix']['timeout']){
+    Timeout.timeout(node['zabbix']['timeout']) do
       zbx = ZabbixApi.connect(
         url: node['zabbix']['url'],
         user: node['zabbix']['user'],
         password: node['zabbix']['password'],
         debug: false
       )
-    }
+    end
   rescue => e
     Chef::Log.info("[Zabbix] Cannot connect to Zabbix api! (#{e.message})")
     return
