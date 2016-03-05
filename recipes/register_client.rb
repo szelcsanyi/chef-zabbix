@@ -1,4 +1,4 @@
-gem_file = 'zabbixapi-2.4.2.gem'
+gem_file = 'zabbixapi-2.4.7.gem'
 dest_gem_file = "#{Chef::Config['file_cache_path']}/#{gem_file}"
 c = cookbook_file dest_gem_file do
   source "gems/#{gem_file}"
@@ -8,7 +8,7 @@ c.run_action(:create_if_missing)
 
 r = gem_package 'zabbixapi' do
   action :nothing
-  version '2.4.2'
+  version '2.4.7'
   source dest_gem_file
   if ::File.exist?('/opt/chef/embedded/bin/gem')
     gem_binary '/opt/chef/embedded/bin/gem'
