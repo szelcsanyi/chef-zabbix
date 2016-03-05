@@ -6,6 +6,7 @@ default['zabbix']['proxy_id'] = 0
 default['zabbix']['url'] = 'https://example.com/api_jsonrpc.php'
 default['zabbix']['user'] = 'api'
 default['zabbix']['password'] = ''
+default['zabbix']['timeout'] = 15
 
 # proxy
 default['zabbix']['proxy']['server_address'] = '127.0.0.1'

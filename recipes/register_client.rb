@@ -22,14 +22,17 @@ if Gem::Specification.find_all_by_name('zabbixapi').empty?
   Chef::Log.info('Zabbixapi gem is not available!')
 else
   require 'zabbixapi'
+  require 'timeout'
 
   begin
-    zbx = ZabbixApi.connect(
-      url: node['zabbix']['url'],
-      user: node['zabbix']['user'],
-      password: node['zabbix']['password'],
-      debug: false
-    )
+    Timeout::timeout(node['zabbix']['timeout']){
+      zbx = ZabbixApi.connect(
+        url: node['zabbix']['url'],
+        user: node['zabbix']['user'],
+        password: node['zabbix']['password'],
+        debug: false
+      )
+    }
   rescue => e
     Chef::Log.info("[Zabbix] Cannot connect to Zabbix api! (#{e.message})")
     return
