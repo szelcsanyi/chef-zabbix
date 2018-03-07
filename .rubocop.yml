@@ -13,3 +13,6 @@ Encoding:
 
 Style/SymbolArray:
   EnforcedStyle: brackets
+
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
