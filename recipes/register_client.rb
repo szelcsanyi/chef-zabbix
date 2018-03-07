@@ -101,7 +101,7 @@ else
     Chef::Log.info('[Zabbix] Host has associated roles: ' + roletmpls.join(', '))
     neededtmpls = roletmpls - tmpls
 
-    unless (neededtmpls).empty?
+    unless neededtmpls.empty?
       Chef::Log.info('[Zabbix] Adding templates to host: ' + neededtmpls.join(', '))
       zbx.templates.mass_add(
         hosts_id: [zbxnodeid],
