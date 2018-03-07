@@ -36,6 +36,12 @@ case "$command" in
         mysql.discovery)
                 /etc/zabbix/mon.d/base.db.mysql.discovery "$@"
                 ;;
+        mongodb)
+                /etc/zabbix/mon.d/base.db.mongodb "$@"
+                ;;
+        mongodb.discovery)
+                /etc/zabbix/mon.d/base.db.mongodb.discovery "$@"
+                ;;
         redis)
                 /etc/zabbix/mon.d/base.db.redis "$@"
                 ;;
