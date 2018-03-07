@@ -15,8 +15,8 @@ define :L7_zabbix_check, command: '', enabled: true do
     end
   end
 
-  t.variables[:userparameters] = t.variables[:userparameters].reject do
-    |h| params[:name] == h[:name]
+  t.variables[:userparameters] = t.variables[:userparameters].reject do |h|
+    params[:name] == h[:name]
   end << {
     name: params[:name],
     command: params[:command],
