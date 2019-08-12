@@ -1,0 +1,19 @@
+#!/bin/bash
+
+declare instance="${1:-}"
+declare item="${2:-}"
+declare type="${3:-}"
+
+if [ ! -f /tmp/mongodb-monitoring-status-$instance ]; then
+	echo "No such instance $instance" >&2
+	exit 1
+fi
+
+case "$type" in
+  "array")
+    /usr/bin/jq -M ".$item[]" /tmp/mongodb-monitoring-status-$instance
+    ;;
+  *)
+    /usr/bin/jq -M ".$item" /tmp/mongodb-monitoring-status-$instance
+    ;;
+esac

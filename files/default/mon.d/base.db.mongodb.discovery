@@ -1,0 +1,27 @@
+#!/bin/bash
+
+declare discoverytype="${1:-}"
+
+comma=""
+
+echo -e "{\n\t\"data\":[\n"
+
+case "$discoverytype" in
+	instance)
+		for instance in $(ls -1 /tmp/mongodb-monitoring-status-* 2>/dev/null | grep -v "\.tmp$" 2>/dev/null); do
+			echo -e "\t$comma{ \"{#MONGODB_INSTANCE}\":\t\"${instance#/tmp/mongodb-monitoring-status-*}\" }"
+			comma=","
+		done
+		;;
+	replication)
+		for instance in $(ls -1 /tmp/mongodb-monitoring-status-* 2>/dev/null | grep -v "\.tmp$" 2>/dev/null); do
+			if grep -cqi "Master_Server_Id" $instance; then
+				echo -e "\t$comma{ \"{#MONGODB_INSTANCE}\":\t\"${instance#/tmp/mongodb-monitoring-status-*}\" }"
+				comma=","
+			fi
+		done
+		;;
+esac
+
+echo -e "\n\t]\n}"
+

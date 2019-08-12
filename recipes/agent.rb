@@ -44,6 +44,7 @@ cmd.stdout.split("\n").grep(/(ext|xfs)/).map { |x| x.split(' ')[2] }.each do |fs
     group 'zabbix'
     mode '0644'
     action :create
+    only_if { ::File.directory?(fs) }
   end
 end
 cmd.error!
