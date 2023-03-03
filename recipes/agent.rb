@@ -30,10 +30,13 @@ remote_directory '/etc/zabbix/mon.d' do
 end
 
 service 'zabbix-agent' do
-  provider Chef::Provider::Service::Init::Debian
+  case node['platform_version'].to_f
+  when 14.04
+    provider Chef::Provider::Service::Init::Debian
+    status_command '/etc/init.d/zabbix-agent status'
+  end
   action [:enable, :start]
-  supports [restart: true, reload: true, status: true]
-  status_command '/etc/init.d/zabbix-agent status'
+  supports [restart: true, status: true]
 end
 
 cmd = Mixlib::ShellOut.new('mount')

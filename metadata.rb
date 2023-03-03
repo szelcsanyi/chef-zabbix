@@ -4,11 +4,10 @@ maintainer_email 'szelcsanyi.gabor@gmail.com'
 license          'All rights reserved'
 description      'Installs/Configures zabbix, automatic client registration'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.0.20'
+version          '1.0.26'
 source_url       'https://github.com/szelcsanyi/chef-zabbix'
 issues_url       'https://github.com/szelcsanyi/chef-zabbix/issues'
 
 supports 'ubuntu', '>= 14.04'
-supports 'debian', '>= 7.0'
 
 depends 'L7-firewall'
