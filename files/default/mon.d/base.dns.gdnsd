@@ -8,37 +8,37 @@ declare command="${1:-}"
 
 case "$command" in
         noerror)
-                awk -F, 'FNR == 4 {print $1}' /tmp/gdnsd-status
+                jq '.stats.noerror' /tmp/gdnsd-stats
                 ;;
         refused)
-                awk -F, 'FNR == 4 {print $2}' /tmp/gdnsd-status
+                jq '.stats.refused' /tmp/gdnsd-stats
                 ;;
         nxdomain)
-                awk -F, 'FNR == 4 {print $3}' /tmp/gdnsd-status
+                jq '.stats.nxdomain' /tmp/gdnsd-stats
                 ;;
         notimp)
-                awk -F, 'FNR == 4 {print $4}' /tmp/gdnsd-status
+                jq '.stats.notimp' /tmp/gdnsd-stats
                 ;;
         badvers)
-                awk -F, 'FNR == 4 {print $5}' /tmp/gdnsd-status
+                jq '.stats.badvers' /tmp/gdnsd-stats
                 ;;
         formerr)
-                awk -F, 'FNR == 4 {print $6}' /tmp/gdnsd-status
+                jq '.stats.formerr' /tmp/gdnsd-stats
                 ;;
         dropped)
-                awk -F, 'FNR == 4 {print $7}' /tmp/gdnsd-status
+                jq '.stats.dropped' /tmp/gdnsd-stats
                 ;;
         v6)
-                awk -F, 'FNR == 4 {print $8}' /tmp/gdnsd-status
+                jq '.stats.v6' /tmp/gdnsd-stats
                 ;;
         edns)
-                awk -F, 'FNR == 4 {print $9}' /tmp/gdnsd-status
+                jq '.stats.edns' /tmp/gdnsd-stats
                 ;;
         edns_clientsub)
-                awk -F, 'FNR == 4 {print $10}' /tmp/gdnsd-status
+                jq '.stats.edns_clientsub' /tmp/gdnsd-stats
                 ;;
         backend_down)
-                grep DOWN /tmp/gdnsd-status | head -n1 | sed "s/\/.*//" || echo "OK"
+                grep DOWN /tmp/gdnsd-states | head -n1 | sed "s/\/.*//" | tr -d "\"" || echo "OK"
                 ;;
         *)
                 echo "Unrecognized command $command" >&2
